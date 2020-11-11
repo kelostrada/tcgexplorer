@@ -1,0 +1,197 @@
+<section class="columns">
+  <div class="column">
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            <%= @game %> - Cards Database
+          </h1>
+        </div>
+      </div>
+    </section>
+
+    <div class="cards-list__filters container is-fluid">
+      <%= f = form_for @changeset, "", [phx_change: :filter_change, csrf_token: false] %>
+        <div class="columns">
+          <div class="column is-3 field">
+            <label class="label">Name</label>
+            <div class="control">
+              <%= text_input f, :query, class: "input", placeholder: "Card search", autocomplete: "off", phx_debounce: "300" %>
+            </div>
+          </div>
+
+          <div class="column is-3 field">
+            <label class="label">Skill</label>
+            <div class="control">
+              <%= text_input f, :keyword, class: "input", placeholder: "Skill search", autocomplete: "off", phx_debounce: "300" %>
+            </div>
+          </div>
+
+          <div class="column is-3 field">
+            <label class="label">Clan</label>
+            <div class="select">
+              <%= select f, :clan, @filters.clans %>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-3 field">
+            <label class="label">Expansion</label>
+            <div class="select">
+              <%= select f, :expansion, @filters.expansions %>
+            </div>
+          </div>
+
+          <div class="column is-narrow field">
+            <label class="label">Regulation</label>
+            <div class="select">
+              <%= select f, :regulation, @filters.regulations %>
+            </div>
+          </div>
+
+          <div class="column is-narrow field">
+            <label class="label">Grade</label>
+            <div class="select">
+              <%= select f, :grade, @filters.grades %>
+            </div>
+          </div>
+
+          <div class="column is-narrow field">
+            <label class="label">Rarity</label>
+            <div class="select">
+              <%= select f, :rarity, @filters.rarities %>
+            </div>
+          </div>
+
+          <div class="column is-narrow field">
+            <label class="label">Reset</label>
+            <div class="control">
+              <a class="button is-link is-light" phx-click="reset_filters">Reset</a>
+            </div>
+          </div>
+        </div>
+
+        <%= if @more_filters do %>
+
+        <div class="columns">
+          <div class="column is-1 field">
+            <label class="label">Type</label>
+            <div class="select">
+              <%= select f, :type, @filters.types %>
+            </div>
+          </div>
+
+          <div class="column is-narrow field">
+            <label class="label">Race</label>
+            <div class="select">
+              <%= select f, :race, @filters.races %>
+            </div>
+          </div>
+
+          <div class="column is-narrow field">
+            <label class="label">Nation</label>
+            <div class="select">
+              <%= select f, :nation, @filters.nations %>
+            </div>
+          </div>
+
+          <div class="column is-narrow field">
+            <label class="label">Skill</label>
+            <div class="select">
+              <%= select f, :skill, @filters.skills %>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-6 field">
+            <label class="label">Illustrator</label>
+            <%= text_input f, :illustrator, class: "input", placeholder: "Search Illustrator", autocomplete: "off", list: "results" %>
+
+            <datalist id="results">
+              <%= for illustrator <- @filters.illustrators do %>
+                <option value="<%= illustrator %>"><%= illustrator %></option>
+              <% end %>
+            </datalist>
+          </div>
+        </div>
+
+        <a phx-click="hide_more_filters">HIDE</a>
+        <% else %>
+        <a phx-click="display_more_filters">MORE</a>
+        <% end %>
+
+      </form>
+    </div>
+
+    <hr/>
+
+    <%= live_pagination(@page) %>
+
+    <%= if @page.entries == :loading do %>
+      <div class="cards-list__cards--loading container is-fluid">
+        <div class="columns is-mobile is-centered">
+          <div class="column is-half">
+            <progress class="progress is-small is-primary" max="100"></progress>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="cards-list__cards container is-fluid">
+        <div class="columns is-mobile is-multiline">
+          <%= for card <- @page.entries do %>
+            <div class="cards-list__card-box column is-narrow" phx-click="card_details" phx-value-card-id="<%= card.id %>">
+              <img class="cards-list__card-image" src="<%= card.image_small %>">
+              <span class="is-size-6"><%= card.number %></span><br/>
+              <span class="is-size-7"><%= card.name %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%= live_pagination(@page) %>
+  </div>
+
+  <%= if @card do %>
+  <div class="column is-narrow cards-list__fake-column"></div>
+  <div class="column is-narrow cards-list__card-details box">
+
+
+    <p class="has-text-right" style="cursor: pointer;" phx-click="close_details">
+      <span class="icon is-large">
+        <i class="fas fa-window-close fa-2x"></i>
+      </span>
+    </p>
+
+    <div class="cards-list__card-details-image">
+      <img src="<%= @card.image_small %>" />
+    </div>
+
+    <h5>
+      <%= if @card.expansion && @card.expansion.code do %>
+        [<%= @card.expansion.code %>]
+      <% end %>
+      <%= name @card.expansion %></h5>
+    <h3><%= @card.name %></h3>
+
+    <div>
+      <%= name @card.type %> | <%= name @card.clan %> | <%= name @card.race %> |
+      <%= name @card.nation %> | Grade <%= @card.grade %> | Power <%= @card.power %> |
+      Critical <%= @card.critical %> | Shield <%= @card.shield %> | <%= name @card.skill %> | <%= name @card.gift %>
+    </div>
+
+    <pre><%= @card.effect %></pre>
+
+    <%= if @card.flavor do %>
+      <p class="flavor"><%= @card.flavor %></p>
+    <% end %>
+
+    <div>
+      <%= name @card.regulation %> | <%= @card.number %> | <%= name @card.rarity %> | <%= name @card.illustrator %>
+    </div>
+  </div>
+  <% end %>
+</section>

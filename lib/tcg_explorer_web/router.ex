@@ -18,6 +18,7 @@ defmodule TcgExplorerWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    live "/browser/:game", BrowserLive, :game
   end
 
   # Other scopes may use custom stacks.

@@ -33,12 +33,12 @@ defmodule TcgExplorer.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.6"},
+      {:phoenix, "~> 1.5.6", override: true},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_view, "~> 0.14.6"},
-      {:floki, ">= 0.27.0", only: :test},
+      {:floki, ">= 0.27.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.3 or ~> 0.2.9"},
@@ -46,7 +46,12 @@ defmodule TcgExplorer.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:tesla, "~> 1.3"},
+      {:hackney, "~> 1.15"},
+      {:scrivener_list, "~> 2.0"},
+      {:scrivener_html, "~> 1.8"},
+      {:cardmarket, "~> 0.1.0"}
     ]
   end
 

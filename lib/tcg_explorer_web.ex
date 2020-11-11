@@ -90,6 +90,8 @@ defmodule TcgExplorerWeb do
       import TcgExplorerWeb.ErrorHelpers
       import TcgExplorerWeb.Gettext
       alias TcgExplorerWeb.Router.Helpers, as: Routes
+
+      import TcgExplorerWeb.HTML.Pagination
     end
   end
 

@@ -14,9 +14,9 @@ defmodule TcgExplorer.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: TcgExplorer.PubSub},
       # Start the Endpoint (http/https)
-      TcgExplorerWeb.Endpoint
-      # Start a worker by calling: TcgExplorer.Worker.start_link(arg)
-      # {TcgExplorer.Worker, arg}
+      TcgExplorerWeb.Endpoint,
+      # Start Cardfight
+      Cardfight.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
