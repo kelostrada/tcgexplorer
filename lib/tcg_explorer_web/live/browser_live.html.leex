@@ -1,16 +1,5 @@
 <section class="columns">
   <div class="column">
-
-    <section class="hero">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">
-            <%= @game %> - Cards Database
-          </h1>
-        </div>
-      </div>
-    </section>
-
     <div class="cards-list__filters container is-fluid">
       <%= f = form_for @changeset, "", [phx_change: :filter_change, csrf_token: false] %>
         <div class="columns">

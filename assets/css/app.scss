@@ -1,10 +1,53 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
 @import "../node_modules/nprogress/nprogress.css";
 
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+
+// Set your brand colors
+$purple: #8A4D76;
+$pink: #FA7C91;
+$brown: #757763;
+$beige-light: #D0D1CD;
+$beige-lighter: #EFF0EB;
+
+// Update Bulma's global variables
+$family-sans-serif: "Nunito", sans-serif;
+$grey-dark: $brown;
+$grey-light: $beige-light;
+$primary: $purple;
+$link: $pink;
+$widescreen-enabled: false;
+$fullhd-enabled: false;
+
+// Update some of Bulma's component variables
+$body-background-color: $beige-lighter;
+$control-border-width: 2px;
+$input-border-color: transparent;
+$input-shadow: none;
+
+@import "bulma";
+
+pre {
+  white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+  white-space: -pre-wrap; /* Opera */
+  white-space: -o-pre-wrap; /* Opera */
+  white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+  word-wrap: break-word; /* IE 5.5+ */
+}
+
+.container {
+  max-width: 160.0rem;
+}
+
 /* LiveView specific classes for your customizations */
-.phx-no-feedback.invalid-feedback,
-.phx-no-feedback .invalid-feedback {
+.invalid-feedback {
+  color: #a94442;
+  display: block;
+  margin: -1rem 0 2rem;
+}
+
+.phx-no-feedback.invalid-feedback, .phx-no-feedback .invalid-feedback {
   display: none;
 }
 
@@ -84,8 +127,103 @@
 .alert:empty {
   display: none;
 }
-.invalid-feedback {
-  color: #a94442;
-  display: block;
-  margin: -1rem 0 2rem;
+
+.hidden {
+  display: none;
+}
+
+ul.pagination {
+  display: inline-block;
+  padding-bottom: 10px;
+  margin: 0;
+}
+
+ul.pagination li {
+  display: inline;
+}
+
+ul.pagination li a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+ul.pagination li a.active {
+  background-color: #31708f;
+  color: white;
+}
+
+// .cards-list {
+//   position: fixed;
+//   top: 250px;
+//   bottom: 0px;
+//   overflow-y: auto;
+// }
+
+// .card-details {
+//   position: fixed;
+//   top: 50px;
+//   bottom: 0px;
+//   right: 0px;
+//   overflow-y: auto;
+// }
+
+.flavor {
+  color: #fff;
+  width: 100%;
+  padding: .5em;
+  margin: 1em 0;
+  background-color: #111;
+  text-align: center;
+}
+
+.cards-list__cards {
+  padding-bottom: 30px;
+}
+
+.cards-list__cards--loading {
+  padding-bottom: 50px;
+}
+
+@media only screen and (min-width: $tablet) {
+  .cards-list__fake-column {
+    width: 450px;
+  }
+
+  .cards-list__card-details {
+    width: 450px;
+  }
+}
+
+.cards-list__card-details {
+  background: white;
+  position: fixed;
+  top: 1px;
+  bottom: 1px;
+  right: 1px;
+  overflow-y: auto;
+  z-index: 4;
+}
+
+.cards-list__card-details-image {
+  width: 100%;
+
+  img {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: $tablet) {
+  .cards-list__card-details-image {
+    width: 70%;
+    margin: auto;
+  }
+}
+
+.cards-list__card-box {
+  width: 200px;
+}
+
+.cards-list__card-image {
+  width: 176px;
 }

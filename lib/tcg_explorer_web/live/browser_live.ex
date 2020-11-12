@@ -62,6 +62,7 @@ defmodule TcgExplorerWeb.BrowserLive do
      |> assign(filters: filters)
      |> assign(more_filters: false)
      |> assign(game: game)
+     |> assign(page_title: "#{String.capitalize(game)} Browser")
      |> fetch(%{})}
   end
 
