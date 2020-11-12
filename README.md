@@ -1,6 +1,6 @@
 # TcgExplorer
 
-[![Build Status](https://github.com/kelostrada/tcgexplorer/workflows/Elixir%20CI/badge.svg?branch=main)](https://github.com/kelostrada/tcgexplorer/actions?query=workflow%3A%22Elixir+CI%22)
+[![Build Status](https://github.com/kelostrada/tcgexplorer/workflows/TCG%20Explorer%20CI/badge.svg?branch=main)](https://github.com/kelostrada/tcgexplorer/actions?query=workflow%3A%22TCG+Explorer+CI%22)
 
 To start your Phoenix server:
 
