@@ -19,12 +19,14 @@ defmodule Cardfight.Cache do
 
   import Ecto.Query
 
+  @enabled Application.compile_env(:tcg_explorer, [__MODULE__, :enabled?], true)
+
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def init([]) do
-    send(self(), :fetch_cards)
+    if @enabled, do: send(self(), :fetch_cards)
     {:ok, %{cards: []}}
   end
 

@@ -18,5 +18,7 @@ config :tcg_explorer, TcgExplorerWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :tcg_explorer, Cardfight.Cache, enabled?: false
+
 # Print only warnings and errors during test
 config :logger, level: :warn
