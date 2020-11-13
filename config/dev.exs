@@ -16,7 +16,7 @@ config :tcg_explorer, TcgExplorer.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :tcg_explorer, TcgExplorerWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: System.get_env("PORT")],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
