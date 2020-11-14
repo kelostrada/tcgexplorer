@@ -12,6 +12,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    
+    - name: Execute SSH commmands on remote server
+      uses: JimCronqvist/action-ssh@master
+      with:
+        hosts: 'kelu@tcgexplorer.com'
+        privateKey: ${{ secrets.PRIVATE_KEY }}
+        command: ls -lah
 
     - name: Set up Docker
       uses: docker/setup-buildx-action@v1
