@@ -1,36 +1,50 @@
-FROM bitwalker/alpine-elixir:1.10.4
+FROM elixir:1.10.4-alpine AS build
 
-# Install NPM
-RUN \
-    mkdir -p /opt/app && \
-    chmod -R 777 /opt/app && \
-    apk update && \
-    apk --no-cache --update add \
-      make \
-      g++ \
-      wget \
-      curl \
-      inotify-tools \
-      nodejs \
-      nodejs-npm && \
-    npm install npm -g --no-progress && \
-    update-ca-certificates --fresh && \
-    rm -rf /var/cache/apk/*
+# install build dependencies
+RUN apk add --no-cache build-base npm git python
 
-# Add local node module binaries to PATH
-ENV PATH=./node_modules/.bin:$PATH
+# prepare build dir
+WORKDIR /app
 
-# Ensure latest versions of Hex/Rebar are installed on build
-ONBUILD RUN mix do local.hex --force, local.rebar --force
+# install hex + rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
 
-WORKDIR /opt/app
+# set build ENV
+ENV MIX_ENV=prod
 
-COPY . .
+# install mix dependencies
+COPY mix.exs mix.lock ./
+COPY config config
+RUN mix do deps.get, deps.compile
 
-RUN mix deps.get
+# build assets
+COPY assets/package.json assets/package-lock.json ./assets/
+RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
-RUN cd assets && npm install
+COPY priv priv
+COPY assets assets
+RUN npm run --prefix ./assets deploy
+RUN mix phx.digest
 
-ENV PORT 4000
+# compile and build release
+COPY lib lib
+# uncomment COPY if rel/ exists
+# COPY rel rel
+RUN mix do compile, release
 
-CMD ["mix", "phx.server"]
+# prepare release image
+FROM alpine:3.9 AS app
+RUN apk add --no-cache openssl ncurses-libs
+
+WORKDIR /app
+
+RUN chown nobody:nobody /app
+
+USER nobody:nobody
+
+COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/tcg_explorer ./
+
+ENV HOME=/app
+
+CMD ["bin/tcg_explorer", "start"]
