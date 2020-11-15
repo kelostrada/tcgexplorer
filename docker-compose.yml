@@ -9,12 +9,13 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: tcg_explorer
   web:
-    image: kelu/tcgexplorer
+    image: kelu/tcgexplorer:${VERSION}
     restart: unless-stopped
     environment:
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       DATABASE_URL: ${DATABASE_URL}
       HOST: ${HOST}
+      VERSION: ${VERSION}
     ports:
       - "${PORT}:4000"
     depends_on:
