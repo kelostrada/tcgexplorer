@@ -37,7 +37,7 @@ jobs:
         username: kelu
         key: ${{ secrets.PRIVATE_KEY }}
         source: "docker-compose.yml"
-        target: "/var/www/dev.tcgexplorer.com/docker-compose.yml"
+        target: "/var/www/dev.tcgexplorer.com"
 
     - name: Update service using docker-compose
       uses: appleboy/ssh-action@master
