@@ -21,6 +21,15 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: Get the hash
+      id: get_hash
+      run: |
+        echo ::set-output name=HASH::${GITHUB_SHA::8}
+
+    - name: 'Get Previous tag'
+      id: previoustag
+      uses: "WyriHaximus/github-action-get-previous-tag@master"
+
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
@@ -28,7 +37,8 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          kelu/tcgexplorer:latest
+          kelu/tcgexplorer:dev
+          kelu/tcgexplorer:${{ steps.previoustag.outputs.tag }}-${{ steps.get_hash.outputs.HASH }}
 
     - name: Copy docker-compose.yml
       uses: appleboy/scp-action@master
@@ -46,4 +56,4 @@ jobs:
         host: tcgexplorer.com
         username: kelu
         key: ${{ secrets.PRIVATE_KEY }}
-        script: export VERSION=latest && cd /var/www/dev.tcgexplorer.com && docker-compose up --no-deps -d web
+        script: export VERSION=${{ steps.previoustag.outputs.tag }}-${{ steps.get_hash.outputs.HASH }} && cd /var/www/dev.tcgexplorer.com && docker-compose up --no-deps -d web
