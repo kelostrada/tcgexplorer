@@ -38,6 +38,7 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         source: "docker-compose.yml"
         target: "/var/www/dev.tcgexplorer.com"
+        overwrite: true
 
     - name: Update service using docker-compose
       uses: appleboy/ssh-action@master
