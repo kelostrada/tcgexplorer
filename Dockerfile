@@ -1,8 +1,7 @@
 FROM elixir:1.15-otp-25-alpine AS build
 
 # install build dependencies
-RUN apk add --no-cache build-base git npm python3 ca-certificates openssl && \
-    update-ca-certificates
+RUN apk add --no-cache build-base git npm python3 py3-setuptools openssl
 
 # prepare build dir
 WORKDIR /app
