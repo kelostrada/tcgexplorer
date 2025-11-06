@@ -1,4 +1,4 @@
-FROM elixir:1.15.7-alpine AS build
+FROM elixir:1.15-otp-25-alpine AS build
 
 # install build dependencies
 RUN apk add --no-cache build-base git npm python3 ca-certificates openssl && \
@@ -7,10 +7,9 @@ RUN apk add --no-cache build-base git npm python3 ca-certificates openssl && \
 # prepare build dir
 WORKDIR /app
 
-# install hex + rebar (ensure latest hex for Elixir 1.15.7 compatibility)
-RUN mix archive.uninstall hex.ez --force || true && \
-    mix local.hex --force && \
-    mix hex.info && \
+# install hex + rebar
+RUN mix local.hex --force && \
+    mix archive.install hex hex --force && \
     mix local.rebar --force
 
 # set build ENV
