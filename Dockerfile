@@ -8,9 +8,7 @@ RUN apk add --no-cache build-base git npm python3 ca-certificates openssl && \
 WORKDIR /app
 
 # install hex + rebar
-RUN mix local.hex --force && \
-    mix archive.install hex hex --force && \
-    mix local.rebar --force
+RUN mix local.hex --force && mix local.rebar --force
 
 # set build ENV
 ENV MIX_ENV=prod
