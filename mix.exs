@@ -39,6 +39,7 @@ defmodule TcgExplorer.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_view, "~> 0.14.6"},
       {:floki, ">= 0.27.0"},
+      {:decimal, "2.0.0"},
       {:html_entities, "~> 0.5.2"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
