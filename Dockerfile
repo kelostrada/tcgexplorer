@@ -1,4 +1,4 @@
-FROM elixir:1.15.7-otp-25-alpine AS build
+FROM elixir:1.16.3-otp-26-alpine AS build
 
 # install build dependencies
 RUN apk add --no-cache build-base git npm python3 py3-setuptools openssl
@@ -16,10 +16,6 @@ RUN mix local.hex --force && mix local.rebar --force
 COPY mix.exs mix.lock ./
 COPY config config
 
-# compile dependencies with reduced parallelism for QEMU stability
-# Reduce Erlang scheduler count and make parallelism to avoid QEMU crashes
-ENV ERL_FLAGS="+S 1:1"
-ENV MAKEFLAGS="-j1"
 RUN mix deps.get && \
     mix deps.compile --force
 
