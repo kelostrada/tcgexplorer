@@ -48,17 +48,27 @@ COPY lib lib
 RUN mix do compile, release
 
 # prepare release image
-FROM alpine:3.9 AS app
-RUN apk add --no-cache openssl ncurses-libs
+FROM debian:bookworm-slim AS app
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      openssl \
+      ca-certificates \
+      libncurses6 \
+      libstdc++6 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-RUN chown nobody:nobody /app
+# Copy the entire release directory structure
+COPY --from=build --chown=nobody:nogroup /app/_build/prod/rel/tcg_explorer ./
 
-USER nobody:nobody
+RUN chown -R nobody:nogroup /app
 
-COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/tcg_explorer ./
+USER nobody:nogroup
 
 ENV HOME=/app
+ENV PATH=/app/bin:$PATH
 
 CMD ["bin/tcg_explorer", "start"]
