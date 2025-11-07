@@ -9,14 +9,19 @@ WORKDIR /app
 # set build ENV
 ENV MIX_ENV=prod
 
+# install hex + rebar
+RUN mix local.hex --force && mix local.rebar --force
+
 # install mix dependencies
 COPY mix.exs mix.lock ./
 COPY config config
 
-# install hex + rebar
-RUN mix local.hex --force && mix local.rebar --force
-
-RUN mix do deps.get, deps.compile
+# compile dependencies with reduced parallelism for QEMU stability
+# Reduce Erlang scheduler count and make parallelism to avoid QEMU crashes
+ENV ERL_FLAGS="+S 1:1"
+ENV MAKEFLAGS="-j1"
+RUN mix deps.get && \
+    mix deps.compile --force
 
 # build assets
 COPY assets/package.json assets/package-lock.json ./assets/
