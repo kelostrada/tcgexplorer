@@ -1,8 +1,20 @@
 FROM elixir:1.16.3-otp-26-slim AS build
 
 # install build dependencies
-RUN apk add --no-cache build-base git npm python3 py3-setuptools openssl ca-certificates
-RUN update-ca-certificates
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      build-essential \
+      git \
+      npm \
+      python3 \
+      python3-pip \
+      python3-setuptools \
+      python3-venv \
+      openssl \
+      ca-certificates && \
+    update-ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # prepare build dir
 WORKDIR /app
