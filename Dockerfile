@@ -6,15 +6,16 @@ RUN apk add --no-cache build-base git npm python3 py3-setuptools openssl
 # prepare build dir
 WORKDIR /app
 
-# install hex + rebar
-RUN mix local.hex --force && mix local.rebar --force
-
 # set build ENV
 ENV MIX_ENV=prod
 
 # install mix dependencies
 COPY mix.exs mix.lock ./
 COPY config config
+
+# install hex + rebar
+RUN mix local.hex --force && mix local.rebar --force
+
 RUN mix do deps.get, deps.compile
 
 # build assets
