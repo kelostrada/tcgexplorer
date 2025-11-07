@@ -1,4 +1,4 @@
-FROM elixir:1.17.3-otp-26-slim AS build
+FROM elixir:1.17.3-otp-27-slim AS build
 
 # install build dependencies
 RUN apt-get update && \
