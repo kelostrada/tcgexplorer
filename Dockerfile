@@ -1,4 +1,4 @@
-FROM elixir:1.16.3-otp-26-alpine AS build
+FROM elixir:1.16.3-otp-26-slim AS build
 
 # install build dependencies
 RUN apk add --no-cache build-base git npm python3 py3-setuptools openssl ca-certificates
